@@ -15,7 +15,7 @@ SINGLE_FILE_MODE:=t
 
 # If set to 't', all .tex files in the current directory should be
 # compiled over to .pdf files. Overrides MAIN_TARGET.
-ALL_FILES_MODE:=f
+ALL_FILES_MODE:=
 
 # If neither SINGLE_FILE_MODE nor ALL_FILES_MODE are set to 't', then
 # the MAIN_TARGET is used as the root tex file of the project to be
