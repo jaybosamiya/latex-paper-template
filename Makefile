@@ -84,4 +84,6 @@ clean: ./.latexrun
 	@echo "Finished cleaning up"
 
 ./.latexrun:
-	$(error Unable to find .latexrun in current directory. Are you sure you copied it in?)
+	@echo "Unable to find .latexrun in the current directory."
+	@echo "Downloading it!"
+	@wget https://raw.githubusercontent.com/Nadrieril/latexrun/master/latexrun -O $@
