@@ -6,7 +6,7 @@
 #                         |___/
 
 # Provide the name of the base/root tex file (without the .tex/.pdf)
-MAIN_TARGET=paper
+MAIN_TARGET:=paper
 
 #     _         _                        _   _        ____        _
 #    / \  _   _| |_ ___  _ __ ___   __ _| |_(_) ___  |  _ \ _   _| | ___  ___
@@ -20,11 +20,13 @@ MAIN_TARGET=paper
 .PHONY: all
 all: $(MAIN_TARGET).pdf
 
+LATEXRUN:=python3 ./.latexrun -O .latex.out
+
 .PHONY: FORCE
 $(MAIN_TARGET).pdf: FORCE
-	@python3 ./latexrun $(MAIN_TARGET).tex
+	@$(LATEXRUN) $(MAIN_TARGET).tex
 
 .PHONY: clean
 clean:
-	@python3 ./latexrun --clean-all
+	@$(LATEXRUN) --clean-all
 	@echo "Cleaned up intermediates"
