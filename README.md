@@ -11,10 +11,8 @@ installation, `make` and `python3`.
 
 ## How to Use
 
-Simple run `make` to build the PDF. Use `make clean` to clean up the
-temporary directory.
+Run `make` to build, and `make clean` to clean up.
 
-If your project uses only one `.tex` file, this will automatically do
-the right thing. If your project has more than one `.tex` file, then
-you should open up the [`Makefile`](./Makefile) and set up the
-configuration accordingly. Instructions are present inside the file.
+This should automatically do the right thing to build your PDFs. If
+`make` is unable to make a decision, it will ask you to configure the
+`Makefile` by giving you the right instructions.
