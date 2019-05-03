@@ -16,7 +16,7 @@ ALL_FILES_MODE:=f
 # If neither SINGLE_FILE_MODE nor ALL_FILES_MODE are set to 't', then
 # the MAIN_TARGET is used as the root tex file of the project to be
 # built.
-MAIN_TARGET:=paper
+MAIN_TARGET:=
 
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
@@ -27,11 +27,27 @@ MAIN_TARGET:=paper
 # /_/   \_\__,_|\__\___/|_| |_| |_|\__,_|\__|_|\___| |_| \_\\__,_|_|\___||___/
 #
 
-# Rules that automatically use above configuration.
-# Should NOT require changing.
-
 .PHONY: all
-all: $(MAIN_TARGET).pdf
+TEXFILES:=$(wildcard *.tex)
+
+ifeq ($(SINGLE_FILE_MODE), t)
+ifeq ($(words $(TEXFILES)), 1)
+all: $(TEXFILES:.tex=.pdf)
+else
+all:
+	$(error Found $(words $(TEXFILES)) .tex files. Cannot use SINGLE_FILE_MODE)
+endif
+# End of SINGLE_FILE_MODE
+else ifeq ($(ALL_FILES_MODE), t)
+all: $(TEXFILES:.tex=.pdf)
+# End of ALL_FILES_MODE
+else ifneq ($(MAIN_TARGET),)
+all: $(MAIN_TARGET:.tex=).pdf
+# End of MAIN_TARGET
+else
+all:
+	$(error Should either set SINGLE_FILE_MODE or ALL_FILES_MODE or MAIN_TARGET)
+endif
 
 LATEXRUN:=python3 ./.latexrun -O .latex.out
 # Note: We use latexrun from a slightly more up-to-date fork available
@@ -39,8 +55,8 @@ LATEXRUN:=python3 ./.latexrun -O .latex.out
 # The original can be found at https://github.com/aclements/latexrun
 
 .PHONY: FORCE
-$(MAIN_TARGET).pdf: FORCE
-	@$(LATEXRUN) $(MAIN_TARGET).tex
+%.pdf: FORCE
+	@$(LATEXRUN) $*.tex
 
 .PHONY: clean
 clean:
