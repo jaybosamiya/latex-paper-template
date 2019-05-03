@@ -65,7 +65,7 @@ LATEXRUN:=python3 ./.latexrun -O .latex.out
 .PHONY: clean
 clean: ./.latexrun
 	@$(LATEXRUN) --clean-all
-	@echo "Cleaned up intermediates"
+	@echo "Finished cleaning up"
 
 ./.latexrun:
 	$(error Unable to find .latexrun in current directory. Are you sure you copied it in?)
