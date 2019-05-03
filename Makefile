@@ -9,17 +9,12 @@
 #  \____\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
 #                         |___/
 
-# If set to 't', only one .tex file exists in this directory, and it
-# is what should be built. Overrides ALL_FILES_MODE and MAIN_TARGET.
-SINGLE_FILE_MODE:=t
-
 # If set to 't', all .tex files in the current directory should be
-# compiled over to .pdf files. Overrides MAIN_TARGET.
+# compiled over to .pdf files.
 ALL_FILES_MODE:=
 
-# If neither SINGLE_FILE_MODE nor ALL_FILES_MODE are set to 't', then
-# the MAIN_TARGET is used as the root tex file of the project to be
-# built.
+# If set then MAIN_TARGET is used as the root tex file of the project
+# to be built.
 MAIN_TARGET:=
 
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
@@ -34,12 +29,10 @@ MAIN_TARGET:=
 .PHONY: all
 TEXFILES:=$(wildcard *.tex)
 
-ifeq ($(SINGLE_FILE_MODE), t)
-ifeq ($(words $(TEXFILES)), 1)
-all: $(TEXFILES:.tex=.pdf)
-else
+ifeq ($(ALL_FILES_MODE), t)
+ifneq ($(MAIN_TARGET),)
 all:
-	@echo "Found $(words $(TEXFILES)) .tex files."
+	@echo "Both ALL_FILES_MODE and MAIN_TARGET are set."
 	@echo ""
 	@echo "Do you mean to compile all of them individually to PDFs?"
 	@echo "  If so, please change over to ALL_FILES_MODE"
@@ -48,18 +41,32 @@ all:
 	@echo "  If so, please set MAIN_TARGET"
 	@echo ""
 	@echo "Quitting."
-endif
-# End of SINGLE_FILE_MODE
-else ifeq ($(ALL_FILES_MODE), t)
+else
 all: $(TEXFILES:.tex=.pdf)
+endif
 # End of ALL_FILES_MODE
 else ifneq ($(MAIN_TARGET),)
 all: $(MAIN_TARGET:.tex=).pdf
 # End of MAIN_TARGET
 else
 all:
-	@echo "None of SINGLE_FILE_MODE or ALL_FILES_MODE or MAIN_TARGET has been set"
+ifeq ($(words $(TEXFILES)), 1)
+all: $(TEXFILES:.tex=.pdf)
+else
+all:
+	@echo "Found $(words $(TEXFILES)) .tex files."
+	@echo ""
+ifeq ($(words $(TEXFILES)), 0)
+else
+	@echo "Do you mean to compile all of them individually to PDFs?"
+	@echo "  If so, please change over to ALL_FILES_MODE"
+	@echo ""
+	@echo "Do you mean to compile it to a single PDF?"
+	@echo "  If so, please set MAIN_TARGET"
+	@echo ""
+endif
 	@echo "Quitting."
+endif
 endif
 
 LATEXRUN:=python3 ./.latexrun -O .latex.out
