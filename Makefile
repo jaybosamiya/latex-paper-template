@@ -21,6 +21,9 @@ MAIN_TARGET:=paper
 all: $(MAIN_TARGET).pdf
 
 LATEXRUN:=python3 ./.latexrun -O .latex.out
+# Note: We use latexrun from a slightly more up-to-date fork available
+# at https://github.com/Nadrieril/latexrun
+# The original can be found at https://github.com/aclements/latexrun
 
 .PHONY: FORCE
 $(MAIN_TARGET).pdf: FORCE
