@@ -59,10 +59,13 @@ LATEXRUN:=python3 ./.latexrun -O .latex.out
 # The original can be found at https://github.com/aclements/latexrun
 
 .PHONY: FORCE
-%.pdf: FORCE
+%.pdf: FORCE ./.latexrun
 	@$(LATEXRUN) $*.tex
 
 .PHONY: clean
-clean:
+clean: ./.latexrun
 	@$(LATEXRUN) --clean-all
 	@echo "Cleaned up intermediates"
+
+./.latexrun:
+	$(error Unable to find .latexrun in current directory. Are you sure you copied it in?)
