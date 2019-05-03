@@ -39,7 +39,15 @@ ifeq ($(words $(TEXFILES)), 1)
 all: $(TEXFILES:.tex=.pdf)
 else
 all:
-	$(error Found $(words $(TEXFILES)) .tex files. Cannot use SINGLE_FILE_MODE)
+	@echo "Found $(words $(TEXFILES)) .tex files."
+	@echo ""
+	@echo "Do you mean to compile all of them individually to PDFs?"
+	@echo "  If so, please change over to ALL_FILES_MODE"
+	@echo ""
+	@echo "Do you mean to compile it to a single PDF?"
+	@echo "  If so, please set MAIN_TARGET"
+	@echo ""
+	@echo "Quitting."
 endif
 # End of SINGLE_FILE_MODE
 else ifeq ($(ALL_FILES_MODE), t)
@@ -50,7 +58,8 @@ all: $(MAIN_TARGET:.tex=).pdf
 # End of MAIN_TARGET
 else
 all:
-	$(error Should either set SINGLE_FILE_MODE or ALL_FILES_MODE or MAIN_TARGET)
+	@echo "None of SINGLE_FILE_MODE or ALL_FILES_MODE or MAIN_TARGET has been set"
+	@echo "Quitting."
 endif
 
 LATEXRUN:=python3 ./.latexrun -O .latex.out
