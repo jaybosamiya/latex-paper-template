@@ -5,8 +5,20 @@
 #  \____\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
 #                         |___/
 
-# Provide the name of the base/root tex file (without the .tex/.pdf)
+# If set to 't', only one .tex file exists in this directory, and it
+# is what should be built. Overrides ALL_FILES_MODE and MAIN_TARGET.
+SINGLE_FILE_MODE:=t
+
+# If set to 't', all .tex files in the current directory should be
+# compiled over to .pdf files. Overrides MAIN_TARGET.
+ALL_FILES_MODE:=f
+
+# If neither SINGLE_FILE_MODE nor ALL_FILES_MODE are set to 't', then
+# the MAIN_TARGET is used as the root tex file of the project to be
+# built.
 MAIN_TARGET:=paper
+
+################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
 #     _         _                        _   _        ____        _
 #    / \  _   _| |_ ___  _ __ ___   __ _| |_(_) ___  |  _ \ _   _| | ___  ___
@@ -17,6 +29,7 @@ MAIN_TARGET:=paper
 
 # Rules that automatically use above configuration.
 # Should NOT require changing.
+
 .PHONY: all
 all: $(MAIN_TARGET).pdf
 
