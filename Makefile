@@ -29,6 +29,8 @@ MAIN_TARGET:=
 .PHONY: all
 TEXFILES:=$(wildcard *.tex)
 
+AUTOPICK:=main.tex paper.tex
+
 ifeq ($(ALL_FILES_MODE), t)
 ifneq ($(MAIN_TARGET),)
 all:
@@ -52,7 +54,7 @@ else
 all:
 ifeq ($(words $(TEXFILES)), 1)
 all: $(TEXFILES:.tex=.pdf)
-else
+else ifeq ($(words $(filter $(AUTOPICK),$(TEXFILES))), 0)
 all:
 	@echo "Found $(words $(TEXFILES)) .tex files."
 	@echo ""
@@ -66,6 +68,8 @@ else
 	@echo ""
 endif
 	@echo "Quitting."
+else
+all: $(warning Found multiple .tex files. Automatically chosing likely root as $(firstword $(filter $(AUTOPICK),$(TEXFILES))). Set either MAIN_TARGET or ALL_FILES_MODE to squash this warning.) $(patsubst %.tex,%.pdf,$(firstword $(filter $(AUTOPICK),$(TEXFILES))))
 endif
 endif
 
