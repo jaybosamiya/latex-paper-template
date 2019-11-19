@@ -11,11 +11,11 @@
 
 # If set to 't', all .tex files in the current directory should be
 # compiled over to .pdf files.
-ALL_FILES_MODE:=
+ALL_FILES_MODE?=
 
 # If set then MAIN_TARGET is used as the root tex file of the project
 # to be built.
-MAIN_TARGET:=
+MAIN_TARGET?=
 
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
