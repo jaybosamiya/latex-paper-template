@@ -69,7 +69,8 @@ else
 endif
 	@echo "Quitting."
 else
-all: $(warning Found multiple .tex files. Automatically chosing likely root as $(firstword $(filter $(AUTOPICK),$(TEXFILES))). Set either MAIN_TARGET or ALL_FILES_MODE to squash this warning.) $(patsubst %.tex,%.pdf,$(firstword $(filter $(AUTOPICK),$(TEXFILES))))
+AUTOROOTCHOICE:=$(firstword $(foreach V,$(AUTOPICK),$(filter $(V),$(TEXFILES))))
+all: $(warning Found multiple .tex files. Automatically chosing likely root as $(AUTOROOTCHOICE). Set either MAIN_TARGET or ALL_FILES_MODE to squash this warning.) $(AUTOROOTCHOICE:.tex=.pdf)
 endif
 endif
 
