@@ -1,6 +1,12 @@
 # LaTeX Makefile
 #
 # Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
+#
+# Always find the latest version at
+#    https://github.com/jaybosamiya/latex-paper-template/
+#
+# Alternatively, run `make update-makefile` to pull the latest
+# version.
 
 #   ____             __ _                       _   _
 #  / ___|___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -92,3 +98,8 @@ clean: ./.latexrun
 	@echo "Unable to find .latexrun in the current directory."
 	@echo "Downloading it!"
 	@wget https://raw.githubusercontent.com/Nadrieril/latexrun/master/latexrun -O $@
+
+.PHONY: update-makefile
+update-makefile:
+	@echo "Updating the current Makefile in-place"
+	@wget --quiet --unlink https://raw.githubusercontent.com/jaybosamiya/latex-paper-template/master/Makefile -O Makefile
