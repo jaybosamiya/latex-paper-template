@@ -35,7 +35,7 @@ MAIN_TARGET?=
 .PHONY: all
 TEXFILES:=$(wildcard *.tex)
 
-AUTOPICK:=main.tex paper.tex
+AUTOPICK:=main.tex paper.tex writeup.tex
 
 ifeq ($(ALL_FILES_MODE), t)
 ifneq ($(MAIN_TARGET),)
