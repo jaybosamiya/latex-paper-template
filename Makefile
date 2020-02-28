@@ -88,7 +88,7 @@ LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
 .PHONY: FORCE
 %.pdf: FORCE ./.latexrun
 	@$(LATEXRUN) $*.tex
-	@mv .latex.out/*.synctex.gz .
+	@cp .latex.out/*.synctex.gz .
 
 .PHONY: clean
 clean: ./.latexrun
