@@ -16,3 +16,8 @@ Run `make` to build, and `make clean` to clean up.
 This should automatically do the right thing to build your PDFs. If
 `make` is unable to make a decision, it will ask you to configure the
 `Makefile` by giving you the right instructions.
+
+## Updating to the latest Makefile
+
+Run `make update-makefile` to update to the latest version of the 
+Makefile.
