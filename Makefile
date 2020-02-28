@@ -80,7 +80,7 @@ all: $(warning Found multiple .tex files. Automatically chosing likely root as $
 endif
 endif
 
-LATEXRUN:=python3 ./.latexrun -O .latex.out
+LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
 # Note: We use latexrun from a slightly more up-to-date fork available
 # at https://github.com/Nadrieril/latexrun
 # The original can be found at https://github.com/aclements/latexrun
@@ -88,10 +88,12 @@ LATEXRUN:=python3 ./.latexrun -O .latex.out
 .PHONY: FORCE
 %.pdf: FORCE ./.latexrun
 	@$(LATEXRUN) $*.tex
+	@mv .latex.out/*.synctex.gz .
 
 .PHONY: clean
 clean: ./.latexrun
 	@$(LATEXRUN) --clean-all
+	@rm -rf *.synctex.gz
 	@echo "Finished cleaning up"
 
 ./.latexrun:
