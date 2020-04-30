@@ -119,9 +119,9 @@ ifneq ($(MAIN_TARGET),)
 diff-%: FORCE ./.latexrun
 	@echo "Generating diff against revision $*"
 	@latexdiff-vc --git -r $* --flatten --exclude-textcmd="author" -t CCHANGEBAR --force $(MAIN_TARGET:.tex=).tex >/dev/null
-	@echo "Generated main-diff$*.tex. Attempting to compile it."
-	@$(LATEXRUN) main-diff$*.tex
-	@echo "Generated main-diff$*.pdf."
+	@echo "Generated $(MAIN_TARGET:.tex=)-diff$*.tex. Attempting to compile it."
+	@$(LATEXRUN) $(MAIN_TARGET:.tex=)-diff$*.tex
+	@echo "Generated $(MAIN_TARGET:.tex=)-diff$*.pdf."
 
 ifneq ($(DIFF_REVISIONS),)
 diff: FORCE ./.latexrun
