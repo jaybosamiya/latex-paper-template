@@ -23,6 +23,14 @@ ALL_FILES_MODE?=
 # to be built.
 MAIN_TARGET?=
 
+# If set to git commits, separated by spaces, then `make diff` will
+# produce diffs against each commit. Additionally, `make diff-REV`
+# will produce a diff against revision REV. Requires `latexdiff` to be
+# installed on the system.
+#
+# Caveat: Works only in MAIN_TARGET mode (for now).
+DIFF_REVISIONS?=
+
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
 #     _         _                        _   _        ____        _
@@ -105,3 +113,18 @@ clean: ./.latexrun
 update-makefile:
 	@echo "Updating the current Makefile in-place"
 	@wget --quiet --unlink https://raw.githubusercontent.com/jaybosamiya/latex-paper-template/master/Makefile -O Makefile
+
+ifneq ($(MAIN_TARGET),)
+.PHONY: diff-%
+diff-%: FORCE ./.latexrun
+	@echo "Generating diff against revision $*"
+	@latexdiff-vc --git -r $* --flatten --exclude-textcmd="author" -t CCHANGEBAR --force $(MAIN_TARGET:.tex=).tex >/dev/null
+	@echo "Generated main-diff$*.tex. Attempting to compile it."
+	@$(LATEXRUN) main-diff$*.tex
+	@echo "Generated main-diff$*.pdf."
+
+ifneq ($(DIFF_REVISIONS),)
+diff: FORCE ./.latexrun
+	@$(MAKE) $(patsubst %,diff-%,$(DIFF_REVISIONS))
+endif
+endif
