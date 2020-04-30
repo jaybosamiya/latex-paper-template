@@ -1,7 +1,7 @@
 # LaTeX Paper Template
 
 This repository is a template to have a good point to start from for
-writing a paper/report using LaTeX.
+writing a paper/report/homework/assignments using LaTeX.
 
 It uses a nice build system
 ([latexrun](https://github.com/aclements/latexrun)) which makes it
@@ -15,7 +15,27 @@ Run `make` to build, and `make clean` to clean up.
 
 This should automatically do the right thing to build your PDFs. If
 `make` is unable to make a decision, it will ask you to configure the
-`Makefile` by giving you the right instructions.
+`Makefile` by giving you the right instructions. In particular,
+irrespective of how many `.tex` files are in the current directory, it
+will try to figure out the best course of action based on the files,
+and if it cannot, then it will recommend setting up a configuration
+variable to guide it.
+
+## How to make pretty PDF diffs
+
+If you are in `MAIN_TARGET` mode, then the `make diff-*` set of
+commands are unlocked. They can be used to get a diff against any git
+commit, easily. For example `make diff-abcde` will create a new PDF
+file with a diff against the commit `abcde`.
+
+To make it more convenient to do such diffs, however, you can set up
+the `DIFF_REVISIONS` variable, which will automatically unlock the
+`make diff` command which will perform a diff against all the
+revisions specified.
+
+Requires `latexdiff` to be installed on your system. Can be installed
+via `sudo apt install latexdiff` or similar command based on your
+package manager.
 
 ## Updating to the latest Makefile
 
