@@ -146,3 +146,6 @@ diff: FORCE ./.latexrun
 	@$(MAKE) $(patsubst %,diff-%,$(DIFF_REVISIONS))
 endif
 endif
+
+# Force all intermediate files to be saved even in chains of implicits
+.SECONDARY:
