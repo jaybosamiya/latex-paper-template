@@ -1,6 +1,6 @@
 # LaTeX Makefile
-#
-# Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
+#   Version: 0.2.0
+#   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
 #    https://github.com/jaybosamiya/latex-paper-template/
