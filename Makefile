@@ -45,6 +45,8 @@ TEXFILES:=$(wildcard *.tex)
 
 AUTOPICK:=main.tex paper.tex writeup.tex
 
+ALL_TARGET:=
+
 ifeq ($(ALL_FILES_MODE), t)
 ifneq ($(MAIN_TARGET),)
 all:
@@ -58,16 +60,16 @@ all:
 	@echo ""
 	@echo "Quitting."
 else
-all: $(TEXFILES:.tex=.pdf)
+ALL_TARGET:=$(TEXFILES:.tex=.pdf)
 endif
 # End of ALL_FILES_MODE
 else ifneq ($(MAIN_TARGET),)
-all: $(MAIN_TARGET:.tex=).pdf
+ALL_TARGET:=$(MAIN_TARGET:.tex=).pdf
 # End of MAIN_TARGET
 else
 all:
 ifeq ($(words $(TEXFILES)), 1)
-all: $(TEXFILES:.tex=.pdf)
+ALL_TARGET:=$(TEXFILES:.tex=.pdf)
 else ifeq ($(words $(filter $(AUTOPICK),$(TEXFILES))), 0)
 all:
 	@echo "Found $(words $(TEXFILES)) .tex files."
@@ -86,6 +88,10 @@ else
 AUTOROOTCHOICE:=$(firstword $(foreach V,$(AUTOPICK),$(filter $(V),$(TEXFILES))))
 all: $(warning Found multiple .tex files. Automatically chosing likely root as $(AUTOROOTCHOICE). Set either MAIN_TARGET or ALL_FILES_MODE to squash this warning.) $(AUTOROOTCHOICE:.tex=.pdf)
 endif
+endif
+
+ifneq ($(ALL_TARGET),)
+all: $(ALL_TARGET)
 endif
 
 LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
