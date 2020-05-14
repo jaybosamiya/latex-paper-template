@@ -31,6 +31,10 @@ MAIN_TARGET?=
 # Caveat: Works only in MAIN_TARGET mode (for now).
 DIFF_REVISIONS?=
 
+# If set to a non-empty value, generates a nice HTML copy of the
+# PDF. Requires pdf2htmlex to be installed.
+HTML_GENERATION?=
+
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
 #     _         _                        _   _        ____        _
@@ -91,7 +95,11 @@ endif
 endif
 
 ifneq ($(ALL_TARGET),)
+ifeq ($(HTML_GENERATION),)
 all: $(ALL_TARGET)
+else
+all: $(ALL_TARGET:.pdf=.html)
+endif
 endif
 
 LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
@@ -103,6 +111,10 @@ LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
 %.pdf: FORCE ./.latexrun
 	@$(LATEXRUN) $*.tex
 	@cp .latex.out/*.synctex.gz .
+
+%.html: %.pdf
+	@echo "Generating $@"
+	@pdf2htmlEX --zoom 2 --process-outline 0 $<
 
 .PHONY: clean
 clean: ./.latexrun
