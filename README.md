@@ -37,6 +37,13 @@ Requires `latexdiff` to be installed on your system. Can be installed
 via `sudo apt install latexdiff` or similar command based on your
 package manager.
 
+## How to make pretty standalone HTML
+
+If you set up `HTML_GENERATION` variable to a non-empty value, after
+installing
+[`pdf2htmlEX`](https://coolwanglu.github.io/pdf2htmlEX/). This should
+generate a (standalone) HTML file beside each PDF generated.
+
 ## Updating to the latest Makefile
 
 Run `make update-makefile` to update to the latest version of the 
