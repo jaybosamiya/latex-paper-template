@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.2.0
+#   Version: 0.3.0
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -107,6 +107,18 @@ LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
 # at https://github.com/Nadrieril/latexrun
 # The original can be found at https://github.com/aclements/latexrun
 
+# Use the correct sed necessary, based upon OS
+UNAME_S:=$(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+SED:=sed
+else
+ifeq ($(UNAME_S),Darwin)
+SED:=gsed
+else
+$(error Unrecognized OS "$(UNAME_S)" when trying to autodetect sed)
+endif
+endif
+
 .PHONY: FORCE
 %.pdf: FORCE ./.latexrun
 	@$(LATEXRUN) $*.tex
@@ -137,6 +149,8 @@ ifneq ($(MAIN_TARGET),)
 diff-%: FORCE ./.latexrun
 	@echo "Generating diff against revision $*"
 	@latexdiff-vc --git -r $* --flatten --exclude-textcmd="author" -t CCHANGEBAR --force $(MAIN_TARGET:.tex=).tex >/dev/null
+	@echo "Modern LaTeX has issues with the very old changebar package when floats get involved. Making sure to use the local version of changebar."
+	@$(SED) -i 's/{changebar}/{changebarmodified}/' $(MAIN_TARGET:.tex=)-diff$*.tex
 	@echo "Generated $(MAIN_TARGET:.tex=)-diff$*.tex. Attempting to compile it."
 	@$(LATEXRUN) $(MAIN_TARGET:.tex=)-diff$*.tex
 	@echo "Generated $(MAIN_TARGET:.tex=)-diff$*.pdf."
