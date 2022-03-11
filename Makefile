@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.3.0
+#   Version: 0.3.1
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -139,6 +139,11 @@ clean: ./.latexrun
 	@echo "Downloading it!"
 	@wget https://raw.githubusercontent.com/Nadrieril/latexrun/master/latexrun -O $@
 
+./changebarmodified.sty:
+	@echo "Unable to find $@"
+	@echo "Downloading it!"
+	@wget https://raw.githubusercontent.com/jaybosamiya/latex-paper-template/master/changebarmodified.sty -O $@
+
 .PHONY: update-makefile
 update-makefile:
 	@echo "Updating the current Makefile in-place"
@@ -146,7 +151,7 @@ update-makefile:
 
 ifneq ($(MAIN_TARGET),)
 .PHONY: diff-%
-diff-%: FORCE ./.latexrun
+diff-%: FORCE ./.latexrun ./changebarmodified.sty
 	@echo "Generating diff against revision $*"
 	@latexdiff-vc --git -r $* --flatten --exclude-textcmd="author" -t CCHANGEBAR --force $(MAIN_TARGET:.tex=).tex >/dev/null
 	@echo "Modern LaTeX has issues with the very old changebar package when floats get involved. Making sure to use the local version of changebar."
