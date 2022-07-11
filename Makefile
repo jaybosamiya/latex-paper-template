@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.3.1
+#   Version: 0.3.2
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -165,6 +165,11 @@ diff: FORCE ./.latexrun
 	@$(MAKE) $(patsubst %,diff-%,$(DIFF_REVISIONS))
 endif
 endif
+
+.PHONY: watch
+watch: all
+	@echo "Finished initial (re)build. Now watching."
+	fswatch --one-per-batch $(shell find . -name \*.tex) | xargs -n1 -I'{}' make all
 
 # Force all intermediate files to be saved even in chains of implicits
 .SECONDARY:

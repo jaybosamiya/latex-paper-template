@@ -21,6 +21,13 @@ will try to figure out the best course of action based on the files,
 and if it cannot, then it will recommend setting up a configuration
 variable to guide it.
 
+## Setting up a listener to auto-recompile whenever you save
+
+Make sure you have [fswatch](https://github.com/emcrisostomo/fswatch)
+installed, and then run `make watch`. This will set up a watcher
+that will automatically call `make` for you. To stop the watcher,
+simply press Ctrl-C.
+
 ## How to make pretty PDF diffs
 
 If you are in `MAIN_TARGET` mode, then the `make diff-*` set of
