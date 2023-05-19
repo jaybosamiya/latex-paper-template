@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.3.2
+#   Version: 0.3.3
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -169,7 +169,7 @@ endif
 .PHONY: watch
 watch: all
 	@echo "Finished initial (re)build. Now watching."
-	fswatch --one-per-batch $(shell find . -name \*.tex) | xargs -n1 -I'{}' make all
+	fswatch --one-per-batch $(shell find . -name \*.tex) $(shell find . -name \*.bib) | xargs -n1 -I'{}' make all
 
 # Force all intermediate files to be saved even in chains of implicits
 .SECONDARY:
