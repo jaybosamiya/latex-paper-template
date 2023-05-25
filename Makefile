@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.3.3
+#   Version: 0.4.0
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -35,6 +35,10 @@ DIFF_REVISIONS?=
 # PDF. Requires pdf2htmlex to be installed.
 HTML_GENERATION?=
 
+# If set to 't', ensures indentation of all the .tex files is
+# normalized using the ./.latexindent.yaml settings.
+ALWAYS_REINDENT?=t
+
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
 #     _         _                        _   _        ____        _
@@ -50,6 +54,10 @@ TEXFILES:=$(wildcard *.tex)
 AUTOPICK:=main.tex paper.tex writeup.tex
 
 ALL_TARGET:=
+
+ifeq ($(ALWAYS_REINDENT), t)
+all: indent
+endif
 
 ifeq ($(ALL_FILES_MODE), t)
 ifneq ($(MAIN_TARGET),)
@@ -123,6 +131,7 @@ endif
 %.pdf: FORCE ./.latexrun
 	@$(LATEXRUN) $*.tex
 	@cp .latex.out/*.synctex.gz .
+	@echo "Finished building $@"
 
 %.html: %.pdf
 	@echo "Generating $@"
@@ -131,8 +140,16 @@ endif
 .PHONY: clean
 clean: ./.latexrun
 	@$(LATEXRUN) --clean-all
-	@rm -rf *.synctex.gz
+	@rm -rf *.synctex.gz ./.latexindent-cruft
 	@echo "Finished cleaning up"
+
+.PHONY: indent
+indent: ./.latexindent.yaml ./.latexindent-cruft
+	@find . -name \*.tex -exec 'latexindent' '--silent' '--overwrite' '--local=$<' '--cruft=.latexindent-cruft/' '{}' ';'
+	@echo "Finished reindenting"
+
+./.latexindent-cruft:
+	@mkdir -p $@
 
 ./.latexrun:
 	@echo "Unable to find .latexrun in the current directory."
@@ -143,6 +160,11 @@ clean: ./.latexrun
 	@echo "Unable to find $@"
 	@echo "Downloading it!"
 	@wget https://raw.githubusercontent.com/jaybosamiya/latex-paper-template/master/changebarmodified.sty -O $@
+
+./.latexindent.yaml:
+	@echo "Unable to find $@"
+	@echo "Downloading it!"
+	@wget https://raw.githubusercontent.com/jaybosamiya/latex-paper-template/master/.latexindent.yaml -O $@
 
 .PHONY: update-makefile
 update-makefile:

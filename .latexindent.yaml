@@ -1,0 +1,25 @@
+maxNumberOfBackUps: 5
+cycleThroughBackUps: 1
+
+defaultIndent: "  "
+
+indentRules:
+  item: "  "
+
+removeTrailingWhitespace:
+  beforeProcessing: 0
+  afterProcessing: 1
+
+noAdditionalIndent:
+  comment: 0
+  todo: 0
+  itemize: 1
+  itemize*: 1
+  enumerate: 1
+  enumerate*: 1
+  description: 1
+  description*: 1
+  list: 1
+  inlineenumerate: 1
+
+dos2unixlinebreaks: 1
