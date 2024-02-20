@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.5
+#   Version: 0.4.6
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -216,6 +216,12 @@ endif
 watch: all
 	@echo "Finished initial (re)build. Now watching."
 	fswatch --one-per-batch $(shell find . -name \*.tex) $(shell find . -name \*.bib) | xargs -I'{}' make __SCREENCLEAR all
+
+ifneq ($(MAIN_TARGET),)
+.PHONY: spellcheck
+spellcheck:
+	for i in $$(find . -name \*.tex); do aspell check --mode=tex --personal=$(shell pwd)/.aspelldict "$$i" ; done
+endif
 
 # Force all intermediate files to be saved even in chains of implicits
 .SECONDARY:
