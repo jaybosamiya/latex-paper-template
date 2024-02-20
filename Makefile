@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.1
+#   Version: 0.4.2
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -38,6 +38,11 @@ HTML_GENERATION?=
 # If set to 't', ensures indentation of all the .tex files is
 # normalized using the ./.latexindent.yaml settings.
 ALWAYS_REINDENT?=
+
+# Any directories here should be built before anything else for `all` target.
+# The default picks up all directories with a Makefile in them (obviously
+# skipping the current directory).
+BUILD_DIRECTORIES_FIRST?=$(dir $(shell find . -name Makefile -not -path ./Makefile))
 
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
@@ -108,6 +113,17 @@ all: $(ALL_TARGET)
 else
 all: $(ALL_TARGET:.pdf=.html)
 endif
+endif
+
+# If any extra directories exist, they must be built before anything else
+ifneq ($(BUILD_DIRECTORIES_FIRST),)
+build_directories_first: FORCE
+	@for i in $(BUILD_DIRECTORIES_FIRST); do \
+		echo "Building in $$i"; \
+		$(MAKE) -C $$i; \
+	done
+
+$(ALL_TARGET): build_directories_first
 endif
 
 LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
