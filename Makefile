@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.3
+#   Version: 0.4.4
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -206,6 +206,11 @@ endif
 
 __SCREENCLEAR: FORCE
 	clear
+
+ifneq ($(MAIN_TARGET),)
+snap: all FORCE
+	cp $(ALL_TARGET) $(ALL_TARGET:.pdf=)-$(shell date +%Y%m%d)-$(shell git rev-parse --short HEAD).pdf
+endif
 
 .PHONY: watch
 watch: all
