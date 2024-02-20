@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.0
+#   Version: 0.4.1
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -37,7 +37,7 @@ HTML_GENERATION?=
 
 # If set to 't', ensures indentation of all the .tex files is
 # normalized using the ./.latexindent.yaml settings.
-ALWAYS_REINDENT?=t
+ALWAYS_REINDENT?=
 
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
