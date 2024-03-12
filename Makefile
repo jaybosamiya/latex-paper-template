@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.6
+#   Version: 0.4.8
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -43,6 +43,9 @@ ALWAYS_REINDENT?=
 # The default picks up all directories with a Makefile in them (obviously
 # skipping the current directory).
 BUILD_DIRECTORIES_FIRST?=$(dir $(shell find . -name Makefile -not -path ./Makefile))
+
+# If set to a `.tex` file, fills in git information into it on each build
+GIT_INFO_TEX?=
 
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
@@ -124,6 +127,17 @@ build_directories_first: FORCE
 	done
 
 $(ALL_TARGET): build_directories_first
+endif
+
+# If GIT_INFO_TEX is set, set up the file
+ifneq ($(GIT_INFO_TEX),)
+$(GIT_INFO_TEX): FORCE
+	@echo "Setting up $@"
+	@echo "\\\\newcommand{\\\\gitcommit}[0]{\\\\texttt{$$(git rev-parse --short HEAD)$$(git diff --quiet || echo ' (dirty)')}\\\\xspace}" > $@
+	@echo "\\\\newcommand{\\\\gitcommitdate}[0]{$$(git show --no-patch --format=%cs HEAD)\\\\xspace}" >> $@
+	@echo "\\\\newcommand{\\\\gitcommitauthordate}[0]{$$(git show --no-patch --format=%as HEAD)\\\\xspace}" >> $@
+
+$(ALL_TARGET): $(GIT_INFO_TEX)
 endif
 
 LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
@@ -215,7 +229,7 @@ endif
 .PHONY: watch
 watch: all
 	@echo "Finished initial (re)build. Now watching."
-	fswatch --one-per-batch $(shell find . -name \*.tex) $(shell find . -name \*.bib) | xargs -I'{}' make __SCREENCLEAR all
+	fswatch --one-per-batch $(shell find . -name \*.tex $(if $(GIT_INFO_TEX),-not -path ./$(GIT_INFO_TEX),)) $(shell find . -name \*.bib) | xargs -I'{}' make __SCREENCLEAR all
 
 ifneq ($(MAIN_TARGET),)
 .PHONY: spellcheck
