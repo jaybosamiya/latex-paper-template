@@ -268,5 +268,20 @@ texmaster:
 	done
 endif
 
+ifneq ($(MAIN_TARGET),)
+.PHONY: chktex
+chktex:
+	@WARNS=$$(mktemp); \
+	find . -name \*.tex -not -name "$(GIT_INFO_TEX)" -print0 | \
+		sort --zero-terminated | \
+		xargs -0 chktex --quiet --verbosity=0 --inputfiles=0 2>"$$WARNS"; \
+	if [ -s "$$WARNS" ]; then \
+		echo "" 1>&2; \
+		echo "De-duplicated stderr:" 1>&2; \
+		sort -u "$$WARNS" 1>&2; \
+	fi; \
+	rm -f "$$WARNS"
+endif
+
 # Force all intermediate files to be saved even in chains of implicits
 .SECONDARY:
