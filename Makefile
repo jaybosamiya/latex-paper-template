@@ -39,6 +39,12 @@ HTML_GENERATION?=
 # normalized using the ./.latexindent.yaml settings.
 ALWAYS_REINDENT?=
 
+# If set to 't', unwraps lines when reindenting
+REINDENT_UNWRAPS_LINES?=
+
+# If set to 't', places places one sentence per-line when reindenting
+REINDENT_ONE_SENTENCE_PER_LINE?=
+
 # Any directories here should be built before anything else for `all` target.
 # The default picks up all directories with a Makefile in them (obviously
 # skipping the current directory).
@@ -173,9 +179,21 @@ clean: ./.latexrun
 	@rm -rf *.synctex.gz ./.latexindent-cruft
 	@echo "Finished cleaning up"
 
+LATEXINDENT_ARGS:=\
+	'--silent' \
+	'--overwrite' \
+	'--cruft=.latexindent-cruft/'
+ifeq ($(REINDENT_ONE_SENTENCE_PER_LINE),t)
+LATEXINDENT_ARGS += '--modifylinebreaks' '--yaml=modifyLineBreaks:oneSentencePerLine:manipulateSentences:1'
+else
+ifeq ($(REINDENT_UNWRAPS_LINES),t)
+LATEXINDENT_ARGS += '--modifylinebreaks' '--yaml=modifyLineBreaks:textWrapOptions:columns:-1'
+endif
+endif
+
 .PHONY: indent
 indent: ./.latexindent.yaml ./.latexindent-cruft
-	@find . -name \*.tex -exec 'latexindent' '--silent' '--overwrite' '--local=$<' '--cruft=.latexindent-cruft/' '{}' ';'
+	@find . -name \*.tex -exec 'latexindent' $(LATEXINDENT_ARGS) '--local=$<'  '{}' ';'
 	@echo "Finished reindenting"
 
 ./.latexindent-cruft:
