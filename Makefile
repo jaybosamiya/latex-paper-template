@@ -255,5 +255,18 @@ spellcheck:
 	for i in $$(find . -name \*.tex); do aspell check --mode=tex --personal=$(shell pwd)/.aspelldict "$$i" ; done
 endif
 
+ifneq ($(MAIN_TARGET),)
+.PHONY: texmaster
+texmaster:
+	@for i in $$(find . -name \*.tex); do \
+		if [ "$$(head -n 1 $$i | grep -c 'mode: latex')" -eq 0 ]; then \
+			echo "Inserting TeX-master into $$i"; \
+			TEX_MASTER_REL_PATH=$$(realpath --relative-to=$$(dirname $$i) $(MAIN_TARGET)); \
+			(echo "% -*- mode: latex; TeX-master: \"$$TEX_MASTER_REL_PATH\" -*-"; echo; cat $$i) > $$i.tmp; \
+			mv $$i.tmp $$i; \
+		fi; \
+	done
+endif
+
 # Force all intermediate files to be saved even in chains of implicits
 .SECONDARY:
