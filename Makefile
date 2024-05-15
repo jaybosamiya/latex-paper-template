@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.9
+#   Version: 0.4.10
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -147,9 +147,12 @@ $(ALL_TARGET): $(GIT_INFO_TEX)
 endif
 
 LATEXRUN:=python3 ./.latexrun --latex-args='--synctex=1' -O .latex.out
-# Note: We use latexrun from a slightly more up-to-date fork available
-# at https://github.com/Nadrieril/latexrun
-# The original can be found at https://github.com/aclements/latexrun
+# Note: The original version of latexrun can be found at
+# https://github.com/aclements/latexrun ; a somewhat more up-to-date fork is
+# available at https://github.com/Nadrieril/latexrun ; the version we use in
+# this repo forks that further and makes small changes ; the definitive version
+# of the latest fork can be found at
+# https://github.com/jaybosamiya/latex-paper-template
 
 # Use the correct sed necessary, based upon OS
 UNAME_S:=$(shell uname -s)
@@ -202,7 +205,7 @@ indent: ./.latexindent.yaml ./.latexindent-cruft
 ./.latexrun:
 	@echo "Unable to find .latexrun in the current directory."
 	@echo "Downloading it!"
-	@wget https://raw.githubusercontent.com/Nadrieril/latexrun/master/latexrun -O $@
+	@wget https://raw.githubusercontent.com/jaybosamiya/latex-paper-template/master/.latexrun -O $@
 
 ./changebarmodified.sty:
 	@echo "Unable to find $@"
