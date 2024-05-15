@@ -355,6 +355,8 @@ class HashCache:
     def get(self, filename):
         """Return the hash of filename, or * if it was clobbered."""
         try:
+            if filename.endswith("/pdfa.xmpi"):
+                return "PDFA-XMPI-HASH-HACK"  # Hardcoded "hash", since this file changes too often due to it holding on to a UUID and timestamp
             with open(filename, 'rb') as fp:
                 st = os.fstat(fp.fileno())
                 key = (st.st_dev, st.st_ino)
