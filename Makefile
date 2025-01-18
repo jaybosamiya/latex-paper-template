@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.10
+#   Version: 0.4.11
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
@@ -250,7 +250,7 @@ endif
 .PHONY: watch
 watch: all
 	@echo "Finished initial (re)build. Now watching."
-	fswatch --one-per-batch $(shell find . -name \*.tex $(if $(GIT_INFO_TEX),-not -path ./$(GIT_INFO_TEX),)) $(shell find . -name \*.bib) | xargs -I'{}' make __SCREENCLEAR all
+	fswatch --event Created --event Updated --event Removed --event Renamed --one-per-batch $(shell find . -name \*.tex $(if $(GIT_INFO_TEX),-not -path ./$(GIT_INFO_TEX),)) $(shell find . -name \*.bib) $(shell find . -name \*.sty) | xargs -I'{}' make __SCREENCLEAR all
 
 ifneq ($(MAIN_TARGET),)
 .PHONY: spellcheck
