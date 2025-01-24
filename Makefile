@@ -1,5 +1,5 @@
 # LaTeX Makefile
-#   Version: 0.4.11
+#   Version: 0.4.12
 #   Author: Jay Bosamiya <jaybosamiya AT gmail DOT com>
 #
 # Always find the latest version at
