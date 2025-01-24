@@ -258,7 +258,7 @@ watch: all
 ifneq ($(MAIN_TARGET),)
 .PHONY: spellcheck
 spellcheck:
-	for i in $$(find . -name \*.tex $(foreach exclude,$(SPELLCHECK_EXCLUDES),! -name $(exclude))); do aspell check --mode=tex --personal=$(shell pwd)/.aspelldict "$$i" ; done
+	for i in $$(find . -name \*.tex $(foreach exclude,$(SPELLCHECK_EXCLUDES),'!' -path './$(exclude)')); do aspell check --mode=tex --personal=$(shell pwd)/.aspelldict "$$i" ; done
 endif
 
 ifneq ($(MAIN_TARGET),)
