@@ -53,7 +53,9 @@ BUILD_DIRECTORIES_FIRST?=$(dir $(shell find . -name Makefile -not -path ./Makefi
 # If set to a `.tex` file, fills in git information into it on each build
 GIT_INFO_TEX?=
 
-# When spellchecking with `make spellcheck`, skip these files
+# When spellchecking with `make spellcheck`, skip these files.
+# Note: do NOT include the `./` (e.g., to exclude `./foo/bar.tex` and 
+# `./baz.tex`, simply write `foo/bar.tex baz.tex` here)
 SPELLCHECK_EXCLUDES?=
 
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
