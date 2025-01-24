@@ -53,6 +53,9 @@ BUILD_DIRECTORIES_FIRST?=$(dir $(shell find . -name Makefile -not -path ./Makefi
 # If set to a `.tex` file, fills in git information into it on each build
 GIT_INFO_TEX?=
 
+# When spellchecking with `make spellcheck`, skip these files
+SPELLCHECK_EXCLUDES?=
+
 ################## DON'T CHANGE ANYTHING BEYOND THIS LINE ####################
 
 #     _         _                        _   _        ____        _
@@ -255,7 +258,7 @@ watch: all
 ifneq ($(MAIN_TARGET),)
 .PHONY: spellcheck
 spellcheck:
-	for i in $$(find . -name \*.tex); do aspell check --mode=tex --personal=$(shell pwd)/.aspelldict "$$i" ; done
+	for i in $$(find . -name \*.tex $(foreach exclude,$(SPELLCHECK_EXCLUDES),! -name $(exclude))); do aspell check --mode=tex --personal=$(shell pwd)/.aspelldict "$$i" ; done
 endif
 
 ifneq ($(MAIN_TARGET),)
