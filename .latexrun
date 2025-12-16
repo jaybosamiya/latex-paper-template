@@ -1700,6 +1700,10 @@ class BibTeX(Task):
                 elif m.group(2):
                     filename = kpathsea.find_file(filename, 'bib', cwd, env)
 
+                # If file was not found, skip it
+                if filename is None:
+                    continue
+
                 # If this path is relative to the source directory,
                 # clean it up for error reporting and portability of
                 # the dependency DB
